@@ -4,8 +4,7 @@
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/styling.css"/>
     <script src="js/App.js"></script>
     <script src="js/knockout-3.4.2.js"></script>
@@ -22,9 +21,10 @@
         <button data-bind="submit:filtering">Filter</button>
       </div>  
 
-        <div class="location-details" data-bind="foreach:venues">
-            <span data-bind="text:title"></span><a href="#" data-bind="click:$parent.listview"></a>
-        </div>
+       <br><br>
+        <ul class="location-details" data-bind="foreach:venues">
+          <a href="#" data-bind="click:$parent.listview"><li data-bind="text:title">
+            </li></a>  
     </div>
 
       <div id="main">
@@ -49,21 +49,11 @@ function closeNav() {
 </script>
 
     <script>
-      var map;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat:18.940288, lng:72.835295},
-          zoom: 7
-        });
-        ko.applyBinding(new VIEWMODEL());
-      }
-
       function LoadingIssue()
       {
         document.write("Loading error,check your connection.....");
       }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDi8GSjieXLnP9b6cSGNKLP9vw3AvtfpEE&callback=initMap" onerror="LoadingIssue()"
-    async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDi8GSjieXLnP9b6cSGNKLP9vw3AvtfpEE&callback=initMap" onerror="LoadingIssue()" async defer></script>
   </body>
 </html>

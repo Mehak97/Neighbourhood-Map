@@ -39,8 +39,14 @@ var initialLocations=[
 
 var markers=[];
 
-var VIEWMODEL=function()
-{
+function initMap() {
+
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat:18.940288, lng:72.835295},
+          zoom: 7
+        });
+
 
 var defaultMarker = makeMarkerIcon('#FF0000'); //default color of marker is stored in default icon
 var highlightedMarker = makeMarkerIcon('FFFF24'); //color when we highlight it
@@ -51,14 +57,7 @@ var bounds = new google.maps.LatLngBounds();
 var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
 
 // This function will loop through the markers array and display them all.
-this.showPlaces=function () {
-        // Extend the boundaries of the map for each marker and display the marker
-        for (var i = 0; i < markers.length; i++) {
-          markers[i].setMap(map);
-          bounds.extend(markers[i].position);
-        }
-        map.fitBounds(bounds);
-      }
+
 
 function toggleBounce() {
         if (marker.getAnimation() !== null) {
@@ -154,10 +153,18 @@ function createMarkersForPlaces(places) {
         return markerImage;
       }
 
+     var MainViewModelInstance = new VIEWMODEL();
+          ko.applyBindings(MainViewModelInstance);
+}
+
+ function VIEWMODEL(){
+
       this.venues=ko.observableArray(markers);
 
-	this.listview=function(){
-		console.log("list appeared");
+	this.listview=function(data){
+    console.log(data.placename);
+		//console.log("list appeared");
+
 			//foresquare_info();
 			// change maker color
 			// displays info window of particulr marker
@@ -185,6 +192,16 @@ function createMarkersForPlaces(places) {
           	alert("no such place found");
           }
 		});
-	}			
+	}		
+
+this.showPlaces=function () {
+        // Extend the boundaries of the map for each marker and display the marker
+        for (var i = 0; i < markers.length; i++) {
+          markers[i].setMap(map);
+          bounds.extend(markers[i].position);
+        }
+        map.fitBounds(bounds);
+      }
+
 }
 
