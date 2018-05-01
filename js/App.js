@@ -131,6 +131,7 @@ function foresquare_info(marker){
 
 function createMarkersForPlaces(places) {
         //var bounds = new google.maps.LatLngBounds();
+         console.log("Meh toh chal gaya")      
         for (var i = 0; i < places.length; i++) {
           var place = places[i];
           var icon = {
@@ -160,40 +161,60 @@ function createMarkersForPlaces(places) {
  function VIEWMODEL(){
 
       this.venues=ko.observableArray(markers);
+      this.createMarkersForPlaces = initMap.createMarkersForPlaces;
+      this.foresquare_info=initMap.foresquare_info;
+      this.toggleBounce=initMap.toggleBounce;
+      this.populateInfoWindow=initMap.populateInfoWindow;
+      this.searchText = ko.observable("");
 
+var largeInfowindow=new google.maps.InfoWindow();
+
+// this function differentiates the clicked place marker from rest markers 
 	this.listview=function(data){
-    console.log(data.placename);
-		//console.log("list appeared");
+    console.log("chl ja yr");
+    console.log(this.title);
+    for(var i=0;i<markers.length;i++)
+      {
+        if(this.title === markers[i].title)
+        {
+          //markers[i].setIcon(highlightedMarker);
+          this.populateInfoWindow(markers[i],largeInfowindow);
+        }
+    }
 
 			//foresquare_info();
 			// change maker color
 			// displays info window of particulr marker
 			//return	foresquare_info(marker);
-	}(this);
+	};
 
+// this function places the marker for place searched on click of button
 	this.filtering=function(){
+    console.log(this.searchText());
 		console.log("function calld");
 		for(var i=0;i<markers.length;i++)
 			{
 				markers[i].setMap(null);// hides all marker
 			}
-		var placesService = new google.maps.places.PlacesService(map);
-        placesService.textSearch({
-          query: document.getElementById('textbox').value,
-          bounds: bounds
-        }, function(results, status) {
-          if (status === google.maps.places.PlacesServiceStatus.OK) {
-          	console.log("Found");
-            createMarkersForPlaces(results);
-          }
-          else
+		// if searchText empty 
+    if(this.searchText() === ''){
+          console.log("khali hai");
+          alert("Enter the location please...");
+        }
+
+          //compare with marker title and show corresponding marker
+    for(var i=0;i<markers.length;i++)
+        {
+          console.log(markers[i].title);
+          if(markers[i].title === this.searchText())
           {
-          	console.log("no place");
-          	alert("no such place found");
+              console.log("marker aa gaya");
+              markers[i].setMap(map);
           }
-		});
+        }
 	}		
 
+// This function will loop through the markers array and display them all.
 this.showPlaces=function () {
         // Extend the boundaries of the map for each marker and display the marker
         for (var i = 0; i < markers.length; i++) {
